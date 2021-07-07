@@ -1,67 +1,51 @@
-import { useState } from "react"
-import Counter from "./Counter"
+import React, { Component } from 'react';
 import './App.css';
+import Display from './Display'
+import Button from './Button'
 
-function Calculadora() {
-    let [initial, setInitial] = useState(0)
-
-    function handleChange(e) {
-        console.log(e.target.value)
-        setInitial(e.target.value)
-        console.log("Initial: " + initial)
+class Calculadora extends Component {
+    state = {
+        resutlado: 0,
     }
+    cambioNumero = (valor) => {
+        this.state.resutlado = valor;
+    }
+    render() {
+        return (
+            <div className="container border">
+                <Display info={this.state.resutlado} />
+                <div>
+                    <div className="d-flex border">
+                        <Button label="C" value="clear" type="op" /> acá quiero el onClick que lleve el value a la función cambio numero.
+                    </div>
+                    <div className="d-flex border">
+                        <Button label="1" value="1" type="num" />
+                        <Button label="2" value="2" type="num" />
+                        <Button label="3" value="3" type="num" />
+                        <Button label="+" value="+" type="op" />
+                    </div>
+                    <div className="d-flex border">
+                        <Button label="4" value="4" type="num" />
+                        <Button label="5" value="5" type="num" />
+                        <Button label="6" value="6" type="num" />
+                        <Button label="+" value="+" type="op" />
+                    </div>
 
-    return (
-        <div>
-            <div className="d-flex" id="display">
-                <input type="number" value={initial} />
+                    <div className="d-flex border">
+                        <Button label="7" value="7" type="num" />
+                        <Button label="8" value="8" type="num" />
+                        <Button label="9" value="*" type="num" />
+                        <Button label="/" value="/" type="op" />
+                    </div>
+                    <div className="d-flex border">
+                        <Button label="0" value="0" type="num" />
+                        <Button label="." value="." type="num" />
+                        <Button label="*" value="*" type="op" />
+                        <Button label="=" value="=" type="res" />
+                    </div>
+                </div>
             </div>
-            <div>
-                <div className="d-flex">
-                    <div className="button button-num">1</div>
-                    <div className="button button-num">2</div>
-                    <div className="button button-num">3</div>
-                    <div className="button button-op">+</div>
-                </div>
-                <div className="d-flex">
-                    <div className="button button-num">4</div>
-                    <div className="button button-num">5</div>
-                    <div className="button button-num">6</div>
-                    <div className="button button-op">-</div>
-                </div>
-                <div className="d-flex">
-                    <div className="button button-num">7</div>
-                    <div className="button button-num">8</div>
-                    <div className="button button-num">9</div>
-                    <div className="button button-op">/</div>
-                </div>
-                <div className="d-flex">
-                    <div className="button button-num">0</div>
-                    <div className="button button-num">.</div>
-                    <div className="button button-result">=</div>
-                    <div className="button button-op">x</div>
-                </div>
-            </div>
-
-
-
-            <form>
-                <div>
-                    <label>Valor inicial</label>
-                    <input type="number" onInput={handleChange} value={initial} />
-                </div>
-                <div>
-                    <label>Salto</label>
-                    <input type="number" onInput={handleChange} value={initial} />
-                </div>
-                <div>
-                    <label>Acepta negativo</label>
-                    <input type="checkbox" onInput={handleChange} />
-                </div>
-            </form>
-
-            <Counter initial={initial} />
-        </div>
-    )
+        );
+    }
 }
 export default Calculadora
