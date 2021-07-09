@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 
 class Button extends Component {
+
+    operar = (e) => {
+        let num = this.props.label;
+        this.props.onClick(num);
+        e.preventDefault();
+    }
+
     render() {
         let className = 'button';
         switch (this.props.type) {
@@ -9,10 +16,8 @@ class Button extends Component {
             case 'num': { className += ' button-num'; break }
             default: { className += ' button-result'; break }
         }
-
-
         return (
-            <div className={className}>
+            <div className={className} onClick={this.operar}>
                 {this.props.label}
             </div>
         );
