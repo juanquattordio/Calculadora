@@ -1,11 +1,13 @@
 .Calculadora {
   text-align: center;
-  justify-content: center;
   flex-direction: column;
   max-width: 400px;
+  min-width: 400px;
+  margin-top: 50px;
 }
 .d-flex{
   display: flex;
+  justify-content: center;
 }
 .button{
   display: flex;
@@ -31,14 +33,21 @@
 }
 #display {
   display: flex;
+  flex-direction: column;
   height: 4em;
   background-color: #000;
   border: 1px solid #888;
   color: #fff;
-  justify-content: flex-end;
+  align-items: flex-end;
+  justify-content: space-around;
   padding: 0.5em;
   font-weight: bold;
   font-size: 1.4em;
-  align-items: center;
+}
+#result{
+  font-size: 2em;
+}
+#backArrow{
+  max-height: 100% ;
 }
 
