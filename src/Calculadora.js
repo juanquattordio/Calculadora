@@ -5,6 +5,7 @@ import Button from './Button'
 import ButtonBack from './ButtonBack'
 
 class Calculadora extends Component {
+
     state = {
         display: "",
         num1: "",
@@ -14,11 +15,19 @@ class Calculadora extends Component {
         resultado: "",
         fullOperation: "",
     }
+    ultimoChar = () => {
+        let lastChar = this.state.display.slice(-1);
+        console.log(lastChar);
+        if (lastChar === "*" || lastChar === "/" || !isNaN(lastChar)) {
+            console.log("Es un numero");
+        } else console.log("No es un numero");
+    }
     cambioDisplay = (valor) => {
         this.setState({
             num1: this.state.num1 + valor,
             num2: this.state.num2 + valor,
             display: this.state.display + valor,
+            fullOperation: this.state.fullOperation + valor,
         })
 
     }
@@ -27,6 +36,7 @@ class Calculadora extends Component {
         if (this.state.display !== "") {
             this.setState({
                 display: this.state.display + valor,
+                fullOperation: this.state.fullOperation + valor,
             })
         }
     }
@@ -36,18 +46,28 @@ class Calculadora extends Component {
             this.setState({
                 num1: this.state.num1 + valor,
                 display: this.state.display + valor,
+                fullOperation: this.state.fullOperation + valor,
             })
         }
     }
     delete = () => {
-        let newDisplay = this.state.display.slice(0, -1);
-        this.setState({
-            display: newDisplay,
-        })
+        if (this.state.operador2 !== "=") {
+            let lastChar = this.state.display.slice(-1);
+            if (lastChar === "*" || lastChar === "/" || !isNaN(lastChar)) {
+                let newDisplay = this.state.display.slice(0, -1);
+                let newFullOperation = this.state.fullOperation.slice(0, -1);
+                let newNum2 = this.state.num2.slice(0, -1);
+                this.setState({
+                    display: newDisplay,
+                    num2: newNum2,
+                    fullOperation: newFullOperation,
+                })
+            }
+        }
     }
     clearDisplay = () => {
         this.setState({
-            display: "",
+            display: this.state.resultado,
         })
     }
     clearAll = () => {
@@ -64,26 +84,31 @@ class Calculadora extends Component {
         let resultadoParcial = eval(this.state.display)
         this.setState({
             display: this.state.display + "+",
+            fullOperation: this.state.fullOperation + "+",
             num1: resultadoParcial,
             num2: "",
             resultado: parseFloat(resultadoParcial),
             operador: "+",
+            operador2: "",
         })
     }
     restar = () => {
         let resultadoParcial = eval(this.state.display)
         this.setState({
             display: this.state.display + "-",
+            fullOperation: this.state.fullOperation + "-",
             num1: resultadoParcial,
             num2: "",
             resultado: parseFloat(resultadoParcial),
             operador: "-",
+            operador2: "",
         })
     }
     dividir = () => {
         let resultadoParcial = eval(this.state.display)
         this.setState({
             display: this.state.display + "/",
+            fullOperation: this.state.fullOperation + "/",
             num1: resultadoParcial,
             num2: this.state.num2 + "/",
             operador2: "/",
@@ -93,19 +118,46 @@ class Calculadora extends Component {
         let resultadoParcial = eval(this.state.display)
         this.setState({
             display: this.state.display + "*",
+            fullOperation: this.state.fullOperation + "*",
             num1: resultadoParcial,
             num2: this.state.num2 + "*",
             operador2: "*",
         })
     }
     calcular = () => {
-        let preResult = this.state.resultado;
-        let fullOp = this.state.display;
-        this.setState({
-            fullOperation: fullOp,
-            resultado: eval(this.state.display),
-            display: preResult + this.state.operador + this.state.num2,
-        })
+        if (this.state.display !== "") {
+            let continuar = true;
+            if (this.state.display.length > 1) {
+                let lastChar2 = this.state.display.slice(-2);
+                if (lastChar2 === "/0") {
+                    alert("#¡DIV/0!");
+                    this.setState({ operador2: "" });
+                    continuar = false;
+                }
+            }
+            if (this.state.operador2 !== "=" && continuar === true) {
+                let lastChar = this.state.display.slice(-1);
+                console.log(!isNaN(lastChar) + "Es un numero");
+                if (isNaN(lastChar)) {
+                    let newFullOperation = this.state.fullOperation.slice(0, -1);
+                    let fullOp = "(" + newFullOperation + ")";
+                    this.setState({
+                        fullOperation: fullOp,
+                        resultado: eval(fullOp),
+                        display: eval(fullOp),//preResult + this.state.operador + this.state.num2,
+                        operador2: "=",
+                    })
+                } else {
+                    let fullOp = "(" + this.state.fullOperation + ")";
+                    this.setState({
+                        fullOperation: fullOp,
+                        resultado: eval(fullOp),
+                        display: eval(fullOp),//preResult + this.state.operador + this.state.num2,
+                        operador2: "=",
+                    })
+                }
+            }
+        };
     }
 
     render() {
